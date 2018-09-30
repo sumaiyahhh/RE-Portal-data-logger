@@ -10,13 +10,26 @@ String checkRot="false";
 String start_time;
 String end_time;
 int startUpInt, endUpInt;
-int startRightInt,endRightInt, startLeftInt, endLeftInt, startDownInt, endDownInt;
+int startRightInt,endRightInt, startLeftInt, endLeftInt, startDownInt, endDownInt, startRotInt, endRotInt;
 String startMonth;
 int num=0;
 int lastrow;
 int rowcount=0;
 int duration;
 int start, end;
+
+
+
+
+int CalculateTime(int start, int end)
+{
+ 
+  duration= end-start;
+  
+  return (duration);
+
+  
+}
 
 
 String ConvertMonth(String startMonth)
@@ -68,20 +81,12 @@ String ConvertMonth(String startMonth)
   return (startMonthnew);
 }
 
-int CalculateTime(int start, int end)
-{
- 
-  duration= end-start;
-  
-  return (duration);
 
-  
-}
 
 void setup() 
 {
 
-  table = loadTable("Workbook11.csv", "header");
+  table = loadTable("workbook 12.csv", "header");
   println(table.getRowCount() + " total rows in table"); 
   lastrow=table.getRowCount();
 
@@ -104,7 +109,8 @@ void setup()
     rowcount=rowcount+1;
     println(rowcount);
 
-    String dateAndtime = row.getString("time");
+    String dateAndtime = row.getString("fullTime");
+    println(dateAndtime);
     String[] firstList= split(dateAndtime, ' ');
     String startDay=firstList[0];
     String startMonth= firstList[1];
@@ -122,7 +128,7 @@ void setup()
     String rot= row.getString("rotation");
 
     println("Time & keys: " + starttime + ", " + up + ", " + right + ", " + down + ", " + left); 
-    //println(row.getInt("time"));   
+    //println(row.getInt("fullTime"));   
 
     //println(up + " (" + right + ") is at the time of " + timeInThisRow);
 
@@ -145,18 +151,18 @@ void setup()
 
       newRow.setString("start time", starttime);
 
-      ConvertMonth(startMonth);
-      newRow.setString("month", startMonthnew);
-      ConvertMonth(startMonth);
+      //ConvertMonth(startMonth);
+      newRow.setString("month", startMonth);
+     // ConvertMonth(startMonth);
 
-      newRow.setString("end month", startMonthnew);
+      newRow.setString("end month", startMonth);
       newRow.setString("headline", "Up");
-        startUpInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+      startUpInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
 
-       newRow.setString("group", "a");
+      newRow.setString("group", "a");
       start_time=starttime;
       checkUp="true";
-      saveTable(table1, "data/work11.csv");
+      saveTable(table1, "data/work12.csv");
      
 
     } 
@@ -165,33 +171,32 @@ void setup()
 
       if (checkUp.equals("true"))
       {
-        ;
+        
         end_time= starttime;
         checkUp="false";
         
 
         table1.setString(num, "end time", starttime);
 
-         endUpInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
-         println("the time it ended at was at " + endUpInt);
+        endUpInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+        println("the time it ended at was at " + endUpInt);
          
         CalculateTime(startUpInt,endUpInt );
 
-if (duration>1)
-{
-       String length=duration + " ";
-       table1.setString(num,"text", "the duration was for "+ length +" seconds.");
-       aveTable(table1, "data/work11.csv");
-}
-else
-{
-    String length=duration + " ";
-      table1.setString(num,"text", "the duration was for "+ length +" seconds.");
-              saveTable(table1, "data/work11.csv");
-}
+        if (duration>1)
+        {
+          String length=duration + " ";
+          table1.setString(num,"text", "the duration was for "+ length +" seconds.");
+          saveTable(table1, "data/work12.csv");
+        }
+        else
+         {
+          String length=duration + " ";
+          table1.setString(num,"text", "the duration was for "+ length +" seconds.");
+          saveTable(table1, "data/work12.csv");
+          }
 
-                      num=num+1;
-
+        num=num+1;
       }
     }
 
@@ -206,7 +211,6 @@ else
       TableRow newRow = table1.addRow();
       println (starttime);
 
-
       newRow.setString("year", startYear);
       newRow.setString("end year", startYear);
 
@@ -214,16 +218,16 @@ else
       newRow.setString("end day", startDay);
 
       newRow.setString("start time", starttime);
-      ConvertMonth(startMonth);
-      newRow.setString("month", startMonthnew);
-      ConvertMonth(startMonth);
+      //ConvertMonth(startMonth);
+      newRow.setString("month", startMonth);
+     // ConvertMonth(startMonth);
 
-      newRow.setString("end month", startMonthnew);
+      newRow.setString("end month", startMonth);
       newRow.setString("headline", "Down");
       newRow.setString("group", "d");
       start_time=starttime;
       checkDown="true";
-      saveTable(table1, "data/work11.csv");
+      saveTable(table1, "data/work12.csv");
        startDownInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
       println("the timeeeeeeeeeeeeee it started at was at " + startDownInt);
 
@@ -232,14 +236,12 @@ else
     
     else if (down.equals("FALSE")&&(checkDown.equals("true")))
     {
-
-      
         end_time= starttime;
         checkDown="false";
 
         table1.setString(num, "end time", starttime);
         num=num+1;
-        saveTable(table1, "data/work11.csv");
+        saveTable(table1, "data/work12.csv");
          endDownInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
         println("the timeeeeeeeeeeeeee it started at was at " + endDownInt);
        
@@ -247,7 +249,7 @@ else
 
         String length=duration + " ";
         table1.setString(num-1,"text", "the duration was for "+ length +" seconds.");
-        saveTable(table1, "data/work11.csv");
+        saveTable(table1, "data/work12.csv");
       
     }
     
@@ -266,16 +268,16 @@ else
       newRow.setString("end day", startDay);
 
       newRow.setString("start time", starttime);
-      ConvertMonth(startMonth);
-      newRow.setString("month", startMonthnew);
-      ConvertMonth(startMonth);
+      //ConvertMonth(startMonth);
+      newRow.setString("month", startMonth);
+     // ConvertMonth(startMonth);
 
-      newRow.setString("end month", startMonthnew);
+      newRow.setString("end month", startMonth);
       newRow.setString("headline", "Right");
-      newRow.setString("group", "d");
-      start_time=starttime;
+      newRow.setString("group", "c");
+      //start_time=starttime;
       checkRight="true";
-      saveTable(table1, "data/work11.csv");
+      saveTable(table1, "data/work12.csv");
        startRightInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
       println("the timeeeeeeeeeeeeee it started at was at " + startRightInt);
 
@@ -284,22 +286,21 @@ else
     
     else if (right.equals("FALSE")&&(checkRight.equals("true")))
     {
-
-      
-        end_time= starttime;
+ 
+       // end_time= starttime;
         checkRight="false";
 
         table1.setString(num, "end time", starttime);
         num=num+1;
-        saveTable(table1, "data/work11.csv");
-         endRightInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+        saveTable(table1, "data/work12.csv");
+        endRightInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
         println("the timeeeeeeeeeeeeee it started at was at " + endRightInt);
        
         CalculateTime(startRightInt,endRightInt);
 
         String length=duration + " ";
         table1.setString(num-1,"text", "the duration was for "+ length +" seconds.");
-        saveTable(table1, "data/work11.csv");
+        saveTable(table1, "data/work12.csv");
       
     }
     
@@ -319,16 +320,16 @@ else
       newRow.setString("end day", startDay);
 
       newRow.setString("start time", starttime);
-      ConvertMonth(startMonth);
-      newRow.setString("month", startMonthnew);
-      ConvertMonth(startMonth);
+      //ConvertMonth(startMonth);
+      newRow.setString("month", startMonth);
+      //ConvertMonth(startMonth);
 
-      newRow.setString("end month", startMonthnew);
+      newRow.setString("end month", startMonth);//changed startMonthNew to startMonth because the convert month function isnt being used
       newRow.setString("headline", "Left");
-      newRow.setString("group", "d");
+      newRow.setString("group", "b");
       start_time=starttime;
       checkLeft="true";
-      saveTable(table1, "data/work11.csv");
+      saveTable(table1, "data/work12.csv");
        startLeftInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
       println("the timeeeeeeeeeeeeee it started at was at " + startLeftInt);
 
@@ -344,15 +345,15 @@ else
 
         table1.setString(num, "end time", starttime);
         num=num+1;
-        saveTable(table1, "data/work11.csv");
-         endLeftInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+        saveTable(table1, "data/work12.csv");
+        endLeftInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
         println("the timeeeeeeeeeeeeee it started at was at " + endLeftInt);
        
         CalculateTime(startLeftInt,endLeftInt);
 
         String length=duration + " ";
         table1.setString(num-1,"text", "the duration was for "+ length +" seconds.");
-        saveTable(table1, "data/work11.csv");
+        saveTable(table1, "data/work12.csv");
       
     }
     
@@ -374,17 +375,19 @@ else
       newRow.setString("end day", startDay);
 
       newRow.setString("start time", starttime);
-      ConvertMonth(startMonth);
-      newRow.setString("month", startMonthnew);
-      ConvertMonth(startMonth);
+     // ConvertMonth(startMonth);
+      newRow.setString("month", startMonth);
+      //ConvertMonth(startMonth);
 
-      newRow.setString("end month", startMonthnew);
+      newRow.setString("end month", startMonth);
       newRow.setString("headline", "Rotation");
       newRow.setString("text", "The dial was rotated");
       newRow.setString("group", "e");
+            startRotInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+
       start_time=starttime;
       checkRot="true";
-      saveTable(table1, "data/work10.csv");
+      saveTable(table1, "data/work12.csv");
     } 
     
     else if (rot.equals("FALSE")&& checkRot.equals("true"))
@@ -394,7 +397,14 @@ else
 
       table1.setString(num, "end time", starttime);
       num=num+1;
-      saveTable(table1, "data/work10.csv");
+      saveTable(table1, "data/work12.csv");
+        endRotInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+       
+        CalculateTime(startRotInt,endRotInt);
+
+        String length=duration + " ";
+        table1.setString(num-1,"text", "the dial was rotated for  "+ length +" seconds.");
+        saveTable(table1, "data/work12.csv");
     } 
     
     else if (rot.equals("TRUE")&& checkRot.equals("true")&&lastrow==rowcount)
@@ -404,10 +414,15 @@ else
 
       table1.setString(num, "end time", starttime);
       num=num+1;
-      saveTable(table1, "data/work10.csv");
-    }
-  
+      saveTable(table1, "data/work12.csv");
+              endRotInt = parseInt(secondList[2]) + (parseInt(secondList[1]) * 60) + (parseInt(secondList[0])*60*60);
+       
+        CalculateTime(startRotInt,endRotInt);
 
+        String length=duration + " ";
+        table1.setString(num-1,"text", "the dial was rotated for "+ length +" seconds.");
+        saveTable(table1, "data/work12.csv");
+    }
 //
   }
   
